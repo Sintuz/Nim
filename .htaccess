@@ -1,0 +1,8 @@
+DirectoryIndex index.php
+SetEnv TZ Europe/Rome
+AddDefaultCharset UTF-8
+DefaultLanguage it-IT
+<FilesMatch "(.htaccess|.gitignore|README.md|LICENSE|composer.json)$">
+ Order Allow,Deny
+ Deny from all
+</FilesMatch>
