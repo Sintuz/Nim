@@ -1,0 +1,12 @@
+{
+	"name": "sintuz/nim",
+	"description": "A simple Nim game implementation in PHP",
+	"homepage": "https://github.com/Sintuz/Nim",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Enrico Sintoni"
+		}
+	],
+	"minimum-stability": "dev"
+}
