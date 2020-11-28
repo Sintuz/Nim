@@ -1,0 +1,51 @@
+html {
+  font-size: 16px;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background-color: lightgrey;
+}
+
+.form-wrapper {
+  width: 30%;
+  height: fit-content;
+  border-radius: 5px;
+  border: 2px solid grey;
+  position: absolute;
+  top: 30%;
+  left: 35%;
+  padding: 10px;
+  background-color: darkgrey;
+  text-align: center;
+}
+
+.text-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.field-group {
+  border: 0;
+  padding: 0.35em 0 0.625em 0;
+  text-align: center;
+  position: relative;
+  margin: auto;
+}
+
+#input-name {
+  padding: .5em 0 .5em 1em;
+  width: 90%;
+  border-radius: 5px;
+  outline: 0;
+  margin: auto;
+}
+
+#submit-button {
+  width: 60%;
+  cursor: pointer;
+  margin: auto;
+  box-sizing: border-box;
+  font-size: 20px;
+}
