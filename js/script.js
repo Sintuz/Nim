@@ -6,7 +6,7 @@ function play(id) {
         data: {
             "id": id
         }
-    },(response) => {
+    },() => {
         location.reload();
     });
 }
