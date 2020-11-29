@@ -5,8 +5,6 @@ session_start();
 if (isset($_SESSION['user'])) header('Location: index.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['user'] = htmlspecialchars($_POST['username']);
-    $_SESSION['difficulty'] = $_POST['difficulty'];
-    var_dump($_POST);
     header('Location: index.php');
 }
 ?>
@@ -43,17 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label id="label-title" for="input-name"><h2>Choose a username</h2></label>
             <input id="input-name" type="text" class="form-control" placeholder="Username" name="username" required>
         </div>
-        <h4>Choose a level of difficulty</h4>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="difficulty" id="inlineRadioSimple"
-                   value="simple" checked>
-            <label class="form-check-label" for="inlineRadioSimple">Simple</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="difficulty" id="inlineRadioHard" value="hard">
-            <label class="form-check-label" for="inlineRadioHard">Hard</label>
-        </div>
-        <br>
         <button id="submit-button" type="submit" class="btn btn-success">Play</button>
     </form>
 </div>
