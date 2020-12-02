@@ -81,7 +81,7 @@ footer {
 /* index */
 #title {
     color: red;
-    font-size: 50px;
+    font-size: 70px;
     text-align: center;
 }
 
@@ -100,8 +100,11 @@ footer {
 
 #board, #info {
     background-color: lightgrey;
+    text-align: center;
 }
-
+.win-loss-text {
+    font-size: 60px;
+}
 .cell {
     border-radius: 8px;
 }
