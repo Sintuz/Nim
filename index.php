@@ -220,7 +220,7 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <!DOCTYPE HTML>
-<html lang="it">
+<html lang="en">
 <head>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
@@ -285,9 +285,9 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
                         <?php
                         if ($_SERVER['REQUEST_METHOD'] != 'POST') {
                             if ($_SESSION['winner'] == 'computer') {
-                                echo "You lost!";
+                                echo "<h2>You lost!</h2>";
                             } else if ($_SESSION['winner'] == 'player') {
-                                echo "You won!";
+                                echo "<h2>You won!</h2>";
                             } else {
                                 $counts = get_counts(unserialize($_SESSION['board']));
                                 echo "<table>";
@@ -308,7 +308,7 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
                             if ($_SESSION['winner'] != null) {
                                 unset($_SESSION['board']);
                                 $_SESSION['winner'] = null;
-                                echo sprintf("<button onclick='location.reload();'>New Game</button>");
+                                echo sprintf("<button class='btn btn-primary' onclick='location.reload();'>New Game</button>");
                             }
                         }
                         ?>
