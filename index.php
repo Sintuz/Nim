@@ -323,5 +323,6 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
     <p></p>
 </div>
 
+<?php include("footer.php");?>
 </body>
 </html>
