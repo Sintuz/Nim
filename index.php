@@ -1,5 +1,5 @@
 <?php
-define("NUM_COLUMN", 4);
+$NUM_COLUMN = 4;
 define("NUM_COLUMN_BIN", 3);
 define("NUM_ROW", 7);
 session_start();
@@ -7,8 +7,9 @@ if (!isset($_SESSION['user'])) header('Location: login.php');
 
 function check_win($board)
 {
+    global $NUM_COLUMN;
     $flag = true;
-    for ($i = 0; $i < NUM_COLUMN; $i++) {
+    for ($i = 0; $i < $NUM_COLUMN; $i++) {
         for ($j = 0; $j < NUM_ROW; $j++) {
             if ($board[$i][$j] == 1) $flag = false;
         }
@@ -18,8 +19,9 @@ function check_win($board)
 
 function get_counts($board)
 {
+    global $NUM_COLUMN;
     $counts = array(0, 0, 0, 0);
-    for ($i = 0; $i < NUM_COLUMN; $i++) {
+    for ($i = 0; $i < $NUM_COLUMN; $i++) {
         for ($j = 0; $j < NUM_ROW; $j++) {
             if ($board[$i][$j] == 1) {
                 $counts[$i]++;
@@ -31,8 +33,9 @@ function get_counts($board)
 
 function convert_to_bin($counts)
 {
+    global $NUM_COLUMN;
     $counts_bin = array();
-    for ($i = 0; $i < NUM_COLUMN; $i++) {
+    for ($i = 0; $i < $NUM_COLUMN; $i++) {
         $counts_bin[$i] = sprintf("%03d", decbin($counts[$i]));
     }
     return $counts_bin;
@@ -40,9 +43,10 @@ function convert_to_bin($counts)
 
 function sum_binary_pos($counts_bin)
 {
+    global $NUM_COLUMN;
     $sums = array(0, 0, 0);
     for ($i = 0; $i < NUM_COLUMN_BIN; $i++) {
-        for ($j = 0; $j < NUM_COLUMN; $j++) {
+        for ($j = 0; $j < $NUM_COLUMN; $j++) {
             $sums[$i] += $counts_bin[$j][$i];
         }
     }
@@ -70,9 +74,10 @@ function get_odd_sums($sums)
 
 function find_col_with_power_in_pos($counts_bin, $power)
 {
+    global $NUM_COLUMN;
     $col = -1;
 
-    for ($i = 0; $i < NUM_COLUMN; $i++) {
+    for ($i = 0; $i < $NUM_COLUMN; $i++) {
         if ($counts_bin[$i][$power] == 1) {
             $col = $i;
         }
@@ -97,13 +102,14 @@ function remove_from_column($board, $col, $num)
 
 function new_board()
 {
+    global $NUM_COLUMN;
     $board = array(
         array(),
         array(),
         array(),
         array(),
     );
-    for ($i = 0; $i < NUM_COLUMN; $i++) {
+    for ($i = 0; $i < $NUM_COLUMN; $i++) {
         $max = rand(0, NUM_ROW - 1);
 
         // declaring empty cells
@@ -122,7 +128,9 @@ function new_board()
 
 if (isset($_SESSION['board'])) {
     $board = unserialize($_SESSION['board']);
+    $NUM_COLUMN = $_SESSION['difficulty'];
 } else {
+    $NUM_COLUMN = $_SESSION['difficulty'];
     $flag = true;
 
     $board = 0;
@@ -251,11 +259,12 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div id="board">
                     <table>
                         <?php
+                        global $NUM_COLUMN;
                         echo "<tbody>";
                         for ($i = NUM_ROW - 1; $i >= 0; $i--) {
                             echo "<tr>";
                             echo sprintf("<td><img src='https://dummyimage.com/40x30/D3D3D3/000&text=%d' alt='block'></td>", $i + 1);
-                            for ($j = 0; $j < NUM_COLUMN; $j++) {
+                            for ($j = 0; $j < $NUM_COLUMN; $j++) {
                                 if ($board[$j][$i] == 1)
                                     echo sprintf("<td id='%d %d' onclick='play(this.id)'><img class='cell' src='https://dummyimage.com/40x30/000000/fff&text=+' alt='block'></td>", $j, $i);
                                 else
@@ -269,7 +278,7 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
                         echo "<tfoot>";
                         echo "<tr>";
                         echo "<td></td>";
-                        for ($i = 0; $i < NUM_COLUMN; $i++) {
+                        for ($i = 0; $i < $NUM_COLUMN; $i++) {
                             echo sprintf("<td><img src='https://dummyimage.com/40x30/D3D3D3/000&text=%d' alt='block'></td>", $i + 1);
                         }
                         echo "</tr>";
@@ -284,35 +293,51 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
                     <p>
                         <?php
                         if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-                            if ($_SESSION['winner'] == 'computer') {
-                                echo "<h2>You lost!</h2>";
-                            } else if ($_SESSION['winner'] == 'player') {
-                                echo "<h2>You won!</h2>";
-                            } else {
+                            if ($_SESSION['winner'] == null) {
+                                /*
                                 $counts = get_counts(unserialize($_SESSION['board']));
                                 echo "<table>";
-                                echo "<thead>";
-                                echo "<td>Column</td><td>Length dec</td><td>Length bin</td>";
-                                echo "</thead>";
                                 echo "<tbody>";
-                                for ($i = 0; $i < NUM_COLUMN; $i++) {
-                                    echo "<tr>";
+                                echo "<tr>";
+                                echo sprintf("<td>%s</td>", $_SESSION['language']=="IT"?"N colonna":"Column");
+                                for ($i = 0; $i < $NUM_COLUMN; $i++) {
                                     echo sprintf("<td>%d</td>", $i + 1);
-                                    echo sprintf("<td>%d</td>", $counts[$i]);
-                                    echo sprintf("<td>%s</td>", sprintf("%03d", decbin($counts[$i])));
-                                    echo "</tr>";
                                 }
+                                echo "</tr>";
+                                echo "<tr>";
+                                echo sprintf("<td>%s</td>", $_SESSION['language']=="IT"?"Lunghezza dec":"Length dec");
+                                for ($i = 0; $i < $NUM_COLUMN; $i++) {
+                                    echo sprintf("<td>%d</td>", $counts[$i]);
+                                }
+                                echo "</tr>";
+                                echo "<tr>";
+                                echo sprintf("<td>%s</td>", $_SESSION['language']=="IT"?"Lunghezza bin":"Length bin");
+                                for ($i = 0; $i < $NUM_COLUMN; $i++) {
+                                    echo sprintf("<td>%s</td>", sprintf("%03d", decbin($counts[$i])));
+                                }
+                                echo "</tr>";
                                 echo "</tbody>";
                                 echo "</table>";
-                                echo "<hr>";
-                                echo "<p>How to play:</p>";
-                                echo "<p>Every turn click on a cell to remove<br> it and all the other above.</p>";
-                                echo "<p>The aim of the game to win is<br> to remove the last cell.</p>";
-                            }
-                            if ($_SESSION['winner'] != null) {
+                                echo "<hr>";*/
+                                if ($_SESSION['language'] == "IT") {
+                                    echo "<p>Come giocare:</p>";
+                                    echo "<p>Ogni turno clicca su una cella per<br> rimuovere essa e tutte quelle sopra.</p>";
+                                    echo "<p>Lo scopo del gioco per vincere<br> é rimuovere l'ultima cella.</p>";
+                                } else {
+                                    echo "<p>How to play:</p>";
+                                    echo "<p>Every turn click on a cell to remove<br> it and all the other above.</p>";
+                                    echo "<p>The aim of the game to win is<br> to remove the last cell.</p>";
+                                }
+                            } else {
+                                if ($_SESSION['winner'] == "computer") {
+                                    echo sprintf("%s!", $_SESSION['language'] == "IT" ? "Hai perso" : "You lost");
+                                } else {
+                                    echo sprintf("%s!", $_SESSION['language'] == "IT" ? "Hai vinto" : "You won");
+                                }
+                                echo "<br>";
                                 unset($_SESSION['board']);
                                 $_SESSION['winner'] = null;
-                                echo sprintf("<button class='btn btn-primary' onclick='location.reload();'>New Game</button>");
+                                echo sprintf("<button class='btn btn-primary' onclick='location.reload();'>%s</button>", $_SESSION['language'] == "IT" ? "Nuova partita" : "New game");
                             }
                         }
                         ?>
@@ -321,12 +346,19 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
             </td>
         </tr>
     </table>
-    <p>Welcome <?php echo $_SESSION['user'] ?></p>
-    <p><?php echo sprintf("Wins: %d<br>Losses: %d", $_SESSION['wins'], $_SESSION['losses']) ?></p>
-    <a href="logout.php">Logout</a>
-    <p></p>
+    <?php
+    if ($_SESSION['language'] == "IT") {
+        echo sprintf("<p>Benvenuto %s</p>", $_SESSION['user']);
+        echo sprintf("<p>Vittorie: %d<br>Sconfitte: %d</p>", $_SESSION['wins'], $_SESSION['losses']);
+        echo sprintf("<a href='logout.php'>Esci</a>");
+    } else {
+        echo sprintf("<p>Welcome %s</p>", $_SESSION['user']);
+        echo sprintf("<p>Wins: %d<br>Losses: %d</p>", $_SESSION['wins'], $_SESSION['losses']);
+        echo sprintf("<a href='logout.php'>Logout</a>");
+    }
+    ?>
 </div>
 
-<?php include("footer.php");?>
+<?php include("footer.php"); ?>
 </body>
 </html>

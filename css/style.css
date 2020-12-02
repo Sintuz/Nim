@@ -15,6 +15,7 @@ hr {
 p {
     margin-bottom: 0;
 }
+
 p:hover, td:hover {
     cursor: default;
 }
@@ -60,6 +61,12 @@ footer {
     margin: auto;
 }
 
+#difficulty-select {
+    width: 50%;
+    position: relative;
+    left: 25%;
+}
+
 #submit-button {
     width: 60%;
     cursor: pointer;
@@ -72,29 +79,35 @@ footer {
 
 
 /* index */
-#title{
+#title {
     color: red;
     font-size: 50px;
     text-align: center;
 }
+
 #container, #board, #info {
     border: 2px solid grey;
     padding: 10px;
     margin: 10px;
     border-radius: 5px;
 }
+
 #container {
     margin: 10% auto;
     width: fit-content;
     background-color: darkgrey;
 }
+
 #board, #info {
     background-color: lightgrey;
 }
-.cell{
+
+.cell {
     border-radius: 8px;
 }
+
 .cell:hover {
     cursor: pointer;
 }
+
 /* end index */

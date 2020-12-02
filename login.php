@@ -5,6 +5,18 @@ session_start();
 if (isset($_SESSION['user'])) header('Location: index.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['user'] = htmlspecialchars($_POST['username']);
+    $_SESSION['language'] = htmlspecialchars($_POST['language']);
+    switch ($_POST['difficulty']) {
+        case "simple":
+            $_SESSION['difficulty'] = 4;
+            break;
+        case "medium":
+            $_SESSION['difficulty'] = 6;
+            break;
+        case "hard":
+            $_SESSION['difficulty'] = 10;
+            break;
+    }
     header('Location: index.php');
 }
 ?>
@@ -34,14 +46,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="form-wrapper">
     <form action="login.php" method="post">
         <div class="form-group">
-            <label id="label-title" for="input-name"><h2>Choose a username</h2></label>
-            <input id="input-name" type="text" class="form-control" placeholder="Username" name="username" required>
+            <label id="label-title" for="input-name"><h3 id="name-text">Scegli un nome</h3></label>
+            <input id="input-name" type="text" class="form-control" placeholder="Nome" name="username" required>
         </div>
-        <button id="submit-button" type="submit" class="btn btn-success">Play</button>
+        <div>
+            <h3 id="language-text">Lingua</h3>
+            <label class="radio-inline">
+                <input type="radio" name="language" value="IT" onchange="changeLang(this)" checked>Italiano
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="language" value="EN" onchange="changeLang(this)">English
+            </label>
+        </div>
+        <div>
+            <label for="difficulty-select"><h3 id="difficulty-text">Difficoltá</h3></label>
+            <select id="difficulty-select" class="form-control form-control-sm" name="difficulty">
+                <option id="simple-text" value="simple" selected>Semplice</option>
+                <option id="medium-text" value="medium">Medio</option>
+                <option id="hard-text" value="hard">Difficile</option>
+            </select>
+        </div>
+        <button id="submit-button" type="submit" class="btn btn-success">Gioca</button>
     </form>
 </div>
 
-<?php include("footer.php");?>
+<?php include("footer.php"); ?>
 </body>
 
 </html>
