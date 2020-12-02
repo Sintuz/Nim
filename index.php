@@ -1,12 +1,15 @@
 <?php
+define("NUM_COLUMN", 4);
+define("NUM_COLUMN_BIN", 3);
+define("NUM_ROW", 7);
 session_start();
 if (!isset($_SESSION['user'])) header('Location: login.php');
 
 function check_win($board)
 {
     $flag = true;
-    for ($i = 0; $i < 4; $i++) {
-        for ($j = 0; $j < 7; $j++) {
+    for ($i = 0; $i < NUM_COLUMN; $i++) {
+        for ($j = 0; $j < NUM_ROW; $j++) {
             if ($board[$i][$j] == 1) $flag = false;
         }
     }
@@ -16,8 +19,8 @@ function check_win($board)
 function get_counts($board)
 {
     $counts = array(0, 0, 0, 0);
-    for ($i = 0; $i < 4; $i++) {
-        for ($j = 0; $j < 7; $j++) {
+    for ($i = 0; $i < NUM_COLUMN; $i++) {
+        for ($j = 0; $j < NUM_ROW; $j++) {
             if ($board[$i][$j] == 1) {
                 $counts[$i]++;
             }
@@ -29,7 +32,7 @@ function get_counts($board)
 function convert_to_bin($counts)
 {
     $counts_bin = array();
-    for ($i = 0; $i < 4; $i++) {
+    for ($i = 0; $i < NUM_COLUMN; $i++) {
         $counts_bin[$i] = sprintf("%03d", decbin($counts[$i]));
     }
     return $counts_bin;
@@ -38,8 +41,8 @@ function convert_to_bin($counts)
 function sum_binary_pos($counts_bin)
 {
     $sums = array(0, 0, 0);
-    for ($i = 0; $i < 3; $i++) {
-        for ($j = 0; $j < 4; $j++) {
+    for ($i = 0; $i < NUM_COLUMN_BIN; $i++) {
+        for ($j = 0; $j < NUM_COLUMN; $j++) {
             $sums[$i] += $counts_bin[$j][$i];
         }
     }
@@ -50,13 +53,13 @@ function get_odd_sums($sums)
 {
     $pos = array();
     $j = 0;
-    for ($i = 0; $i < 3; $i++) {
+    for ($i = 0; $i < NUM_COLUMN_BIN; $i++) {
         if ($sums[$i] % 2 != 0) {
             $pos[$j++] = $i;
         }
     }
     if(count($pos)==0) {
-        for ($i = 0, $j=0; $i < 3; $i++) {
+        for ($i = 0, $j=0; $i < NUM_COLUMN_BIN; $i++) {
             if ($sums[$i] != 0) {
                 $pos[$j++] = $i;
             }
@@ -69,7 +72,7 @@ function find_col_with_power_in_pos($counts_bin, $power)
 {
     $col = -1;
 
-    for ($i = 0; $i < 4; $i++) {
+    for ($i = 0; $i < NUM_COLUMN; $i++) {
         if ($counts_bin[$i][$power] == 1) {
             $col = $i;
         }
@@ -81,7 +84,7 @@ function find_col_with_power_in_pos($counts_bin, $power)
 function remove_from_column($board, $col, $num)
 {
     // taking out the cells
-    $i = 6;
+    $i = NUM_ROW-1;
     while ($board[$col][$i] == 0) {
         $i--;
     }
@@ -100,11 +103,11 @@ function new_board()
         array(),
         array(),
     );
-    for ($i = 0; $i < 4; $i++) {
-        $max = rand(0, 6);
+    for ($i = 0; $i < NUM_COLUMN; $i++) {
+        $max = rand(0, NUM_ROW-1);
 
         // declaring empty cells
-        for ($j = 6; $j > $max; $j--) {
+        for ($j = NUM_ROW-1; $j > $max; $j--) {
             $board[$i][$j] = 0;
         }
 
@@ -137,7 +140,7 @@ if (isset($_SESSION['board'])) {
         $sums = sum_binary_pos($counts_bin);
 
         $flag1 = false;
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < NUM_COLUMN_BIN; $i++) {
             if ($sums[$i] % 2 != 0) $flag1 = true;
         }
         if ($flag1 == false) {
@@ -163,7 +166,7 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
     $y = intval($coords[1]);
 
     if ($board[$x][$y] == 1) {
-        for ($i = $y; $i < 7; $i++) {
+        for ($i = $y; $i < NUM_ROW; $i++) {
             $board[$x][$i] = 0;
         }
 
@@ -253,10 +256,10 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
                     <?php
 
                     echo "<tbody>";
-                    for ($i = 6; $i >= 0; $i--) {
+                    for ($i = NUM_ROW-1; $i >= 0; $i--) {
                         echo "<tr>";
                         echo sprintf("<td><img src='https://dummyimage.com/30x20/ffffff/000&text=%d' alt='block'></td>", $i + 1);
-                        for ($j = 0; $j < 4; $j++) {
+                        for ($j = 0; $j < NUM_COLUMN; $j++) {
                             if ($board[$j][$i] == 1)
                                 echo sprintf("<td id='%d %d' onclick='play(this.id)'><img src='https://dummyimage.com/30x20/000000/fff&text=%d%d' alt='block'></td>", $j, $i, $j, $i);
                             else
@@ -270,7 +273,7 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
                     echo "<tfoot>";
                     echo "<tr>";
                     echo "<td></td>";
-                    for ($i = 0; $i < 4; $i++) {
+                    for ($i = 0; $i < NUM_COLUMN; $i++) {
                         echo sprintf("<td><img src='https://dummyimage.com/30x20/ffffff/000&text=%d' alt='block'></td>", $i + 1);
                     }
                     echo "</tr>";
@@ -295,7 +298,7 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
                                 echo "<td>Column</td><td>Length dec</td><td>Length bin</td>";
                                 echo "</thead>";
                                 echo "<tbody>";
-                                for ($i = 0; $i < 4; $i++) {
+                                for ($i = 0; $i < NUM_COLUMN; $i++) {
                                     echo "<tr>";
                                     echo sprintf("<td>%d</td>", $i + 1);
                                     echo sprintf("<td>%d</td>", $counts[$i]);
