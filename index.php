@@ -304,6 +304,10 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
                                 }
                                 echo "</tbody>";
                                 echo "</table>";
+                                echo "<hr>";
+                                echo "<p>How to play:</p>";
+                                echo "<p>Every turn click on a cell to remove<br> it and all the other above.</p>";
+                                echo "<p>The aim of the game to win is<br> to remove the last cell.</p>";
                             }
                             if ($_SESSION['winner'] != null) {
                                 unset($_SESSION['board']);

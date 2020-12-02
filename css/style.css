@@ -8,6 +8,10 @@ body {
     background-color: lightgrey;
 }
 
+hr {
+    border: 1px solid darkgrey;
+}
+
 p {
     margin-bottom: 0;
 }
