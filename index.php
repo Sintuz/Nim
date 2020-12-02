@@ -257,7 +257,7 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
                             echo sprintf("<td><img src='https://dummyimage.com/40x30/D3D3D3/000&text=%d' alt='block'></td>", $i + 1);
                             for ($j = 0; $j < NUM_COLUMN; $j++) {
                                 if ($board[$j][$i] == 1)
-                                    echo sprintf("<td id='%d %d' onclick='play(this.id)'><img class='cell' src='https://dummyimage.com/40x30/000000/fff&text=%d%d' alt='block'></td>", $j, $i, $j + 1, $i + 1);
+                                    echo sprintf("<td id='%d %d' onclick='play(this.id)'><img class='cell' src='https://dummyimage.com/40x30/000000/fff&text=+' alt='block'></td>", $j, $i);
                                 else
                                     echo "<td></td>";
                             }
