@@ -58,8 +58,8 @@ function get_odd_sums($sums)
             $pos[$j++] = $i;
         }
     }
-    if(count($pos)==0) {
-        for ($i = 0, $j=0; $i < NUM_COLUMN_BIN; $i++) {
+    if (count($pos) == 0) {
+        for ($i = 0, $j = 0; $i < NUM_COLUMN_BIN; $i++) {
             if ($sums[$i] != 0) {
                 $pos[$j++] = $i;
             }
@@ -84,7 +84,7 @@ function find_col_with_power_in_pos($counts_bin, $power)
 function remove_from_column($board, $col, $num)
 {
     // taking out the cells
-    $i = NUM_ROW-1;
+    $i = NUM_ROW - 1;
     while ($board[$col][$i] == 0) {
         $i--;
     }
@@ -104,10 +104,10 @@ function new_board()
         array(),
     );
     for ($i = 0; $i < NUM_COLUMN; $i++) {
-        $max = rand(0, NUM_ROW-1);
+        $max = rand(0, NUM_ROW - 1);
 
         // declaring empty cells
-        for ($j = NUM_ROW-1; $j > $max; $j--) {
+        for ($j = NUM_ROW - 1; $j > $max; $j--) {
             $board[$i][$j] = 0;
         }
 
@@ -195,16 +195,16 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // remove num amount of cell from col column
             $board = remove_from_column($board, $col, $num);
-/*
-            $log = array(
-                'counts' => $counts,
-                'counts_bin' => $counts_bin,
-                'sums' => $sums,
-                'powers' => $powers,
-                'col' => $col,
-                'num' => $num,
-            );
-            $_SESSION['log'] = serialize($log);*/
+            /*
+                        $log = array(
+                            'counts' => $counts,
+                            'counts_bin' => $counts_bin,
+                            'sums' => $sums,
+                            'powers' => $powers,
+                            'col' => $col,
+                            'num' => $num,
+                        );
+                        $_SESSION['log'] = serialize($log);*/
 
             if (check_win($board)) {
                 $_SESSION['winner'] = 'computer';
@@ -241,46 +241,43 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
 
 </head>
 
-<body>
+<body onmousedown='return false' onselectstart='return false'>
 <!--<?php var_dump(unserialize($_SESSION['log'])) ?>-->
-<p id="title">Nim</p>
-<p>Welcome <?php echo $_SESSION['user'] ?></p>
-<p><a href="logout.php">Logout</a></p>
-<p>Wins: <?php echo $_SESSION['wins'] ?></p>
-<p>Losses: <?php echo $_SESSION['losses'] ?></p>
 <div id="container">
+    <p id="title">Nim</p>
     <table id="game">
         <tr>
             <td>
-                <table id="board">
-                    <?php
+                <div id="board">
+                    <table>
+                        <?php
+                        echo "<tbody>";
+                        for ($i = NUM_ROW - 1; $i >= 0; $i--) {
+                            echo "<tr>";
+                            echo sprintf("<td><img src='https://dummyimage.com/40x30/D3D3D3/000&text=%d' alt='block'></td>", $i + 1);
+                            for ($j = 0; $j < NUM_COLUMN; $j++) {
+                                if ($board[$j][$i] == 1)
+                                    echo sprintf("<td id='%d %d' onclick='play(this.id)'><img class='cell' src='https://dummyimage.com/40x30/000000/fff&text=%d%d' alt='block'></td>", $j, $i, $j + 1, $i + 1);
+                                else
+                                    echo "<td></td>";
+                            }
+                            echo "</tr>";
+                        }
+                        echo "</tbody>";
 
-                    echo "<tbody>";
-                    for ($i = NUM_ROW-1; $i >= 0; $i--) {
+
+                        echo "<tfoot>";
                         echo "<tr>";
-                        echo sprintf("<td><img src='https://dummyimage.com/30x20/ffffff/000&text=%d' alt='block'></td>", $i + 1);
-                        for ($j = 0; $j < NUM_COLUMN; $j++) {
-                            if ($board[$j][$i] == 1)
-                                echo sprintf("<td id='%d %d' onclick='play(this.id)'><img src='https://dummyimage.com/30x20/000000/fff&text=%d%d' alt='block'></td>", $j, $i, $j, $i);
-                            else
-                                echo "<td></td>";
+                        echo "<td></td>";
+                        for ($i = 0; $i < NUM_COLUMN; $i++) {
+                            echo sprintf("<td><img src='https://dummyimage.com/40x30/D3D3D3/000&text=%d' alt='block'></td>", $i + 1);
                         }
                         echo "</tr>";
-                    }
-                    echo "</tbody>";
+                        echo "</tfoot>";
 
-
-                    echo "<tfoot>";
-                    echo "<tr>";
-                    echo "<td></td>";
-                    for ($i = 0; $i < NUM_COLUMN; $i++) {
-                        echo sprintf("<td><img src='https://dummyimage.com/30x20/ffffff/000&text=%d' alt='block'></td>", $i + 1);
-                    }
-                    echo "</tr>";
-                    echo "</tfoot>";
-
-                    ?>
-                </table>
+                        ?>
+                    </table>
+                </div>
             </td>
             <td>
                 <div id="info">
@@ -320,6 +317,10 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
             </td>
         </tr>
     </table>
+    <p>Welcome <?php echo $_SESSION['user'] ?></p>
+    <p><?php echo sprintf("Wins: %d<br>Losses: %d", $_SESSION['wins'], $_SESSION['losses']) ?></p>
+    <a href="logout.php">Logout</a>
+    <p></p>
 </div>
 
 </body>

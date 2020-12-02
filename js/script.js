@@ -1,4 +1,3 @@
-
 function play(id) {
     console.log(id);
     $.post({
@@ -6,7 +5,14 @@ function play(id) {
         data: {
             "id": id
         }
-    },() => {
+    }, () => {
         location.reload();
     });
 }
+
+$(document).ready(function () {
+    $("body").on("contextmenu onselectstart oncut oncopy onpaste ondrag", (e) => {
+        e.preventDefault();
+        return false;
+    });
+});
