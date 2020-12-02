@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </label>
         </div>
         <div>
-            <label for="difficulty-select"><h3 id="difficulty-text">Difficoltá</h3></label>
+            <label for="difficulty-select"><h3 id="difficulty-text">Difficoltà</h3></label>
             <select id="difficulty-select" class="form-control form-control-sm" name="difficulty">
                 <option id="simple-text" value="simple" selected>Semplice</option>
                 <option id="medium-text" value="medium">Medio</option>
