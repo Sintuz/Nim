@@ -330,9 +330,9 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
                                 }
                             } else {
                                 if ($_SESSION['winner'] == "computer") {
-                                    echo sprintf("%s!", $_SESSION['language'] == "IT" ? "Hai perso" : "You lost");
+                                    echo sprintf("<p class='text-danger win-loss-text'>%s!</p>", $_SESSION['language'] == "IT" ? "Hai perso" : "You lost");
                                 } else {
-                                    echo sprintf("%s!", $_SESSION['language'] == "IT" ? "Hai vinto" : "You won");
+                                    echo sprintf("<p class='text-danger win-loss-text'>%s!</p>", $_SESSION['language'] == "IT" ? "Hai vinto" : "You won");
                                 }
                                 echo "<br>";
                                 unset($_SESSION['board']);
