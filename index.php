@@ -3,7 +3,10 @@ $NUM_COLUMN = 4;
 define("NUM_COLUMN_BIN", 3);
 define("NUM_ROW", 7);
 session_start();
-if (!isset($_SESSION['user'])) header('Location: login.php');
+if (!isset($_SESSION['difficulty'])) {
+    header('Location: login.php');
+    exit(0);
+}
 
 function check_win($board)
 {
@@ -250,7 +253,6 @@ if (isset($_SESSION['user']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 
 <body onmousedown='return false' onselectstart='return false'>
-<!--<?php var_dump(unserialize($_SESSION['log'])) ?>-->
 <div id="container">
     <p id="title">Nim</p>
     <table id="game">
