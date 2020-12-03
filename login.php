@@ -2,19 +2,23 @@
 
 session_start();
 
-if (isset($_SESSION['user'])) header('Location: index.php');
+if (isset($_SESSION['difficulty'])) {
+    header('Location: index.php');
+    exit(0);
+}
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['user'] = htmlspecialchars($_POST['username']);
     $_SESSION['language'] = htmlspecialchars($_POST['language']);
     switch ($_POST['difficulty']) {
-        case "simple":
-            $_SESSION['difficulty'] = 4;
-            break;
         case "medium":
             $_SESSION['difficulty'] = 6;
             break;
         case "hard":
             $_SESSION['difficulty'] = 10;
+            break;
+        case "simple":
+        default:
+            $_SESSION['difficulty'] = 4;
             break;
     }
     header('Location: index.php');
